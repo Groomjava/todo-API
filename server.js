@@ -34,7 +34,7 @@ app.get('/todos/:id', function(req,res){
 
 	
 */
-	var matchedTodo = _.findwhere(todos, {id:todoId});
+	var matchedTodo = _.findwhere(todos, {id: todoId});
 	if(matchedTodo){
 		res.json(matchedTodo);
 	} else
@@ -48,18 +48,18 @@ app.get('/todos/:id', function(req,res){
 app.post('/todos', function(req, res){
 
 
-	var body = req.body;
+	var body = _.pick(req.body, 'description', 'completed');
 
 	/*body.id = todoNextId;
 	todoNextId ++
 	or
 	*/
-	if(!_.isBoolean(body.completed) ||
-		!_.isString(body.description) || body.description.trim()){
+	if(!_.isBoolean(body.completed) || !_.isString(body.description) || body.description.trim().length === 0){
 		return res.status(400).send();
 	}
 
-	body.id = todoNextId ++;
+	body.description = body.description.trim();
+	body.id = todoNextId++;
 	todos.push(body);
 	res.json(body);
 
